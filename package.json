@@ -1,7 +1,7 @@
 {
   "name": "beefy-caller",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "caller.js",
   "repository": "git@github.com:seguido/beefy-caller.git",
   "author": "chebiN",
   "license": "MIT",
