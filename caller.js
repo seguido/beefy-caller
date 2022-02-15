@@ -46,7 +46,6 @@ const main = async () => {
     } catch (error) {
       console.log("error harvesting aurora")
     }
-    console.log("harvestingAurora")
   }, { timezone: "America/Buenos_Aires" });
 };
 
