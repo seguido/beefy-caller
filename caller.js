@@ -36,6 +36,18 @@ const main = async () => {
     console.log("harvestingAurora")
   }, { timezone: "America/Buenos_Aires" });
 
+
+  cron.schedule("0 0 */6 * * *", async () => {
+
+    try {
+      console.log('Updating aurora strategies')
+      await getAuroraStrategies();
+      console.log('finished updating strategies aurora')
+    } catch (error) {
+      console.log("error harvesting aurora")
+    }
+    console.log("harvestingAurora")
+  }, { timezone: "America/Buenos_Aires" });
 };
 
 main();

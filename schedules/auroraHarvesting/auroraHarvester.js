@@ -9,7 +9,7 @@ require("dotenv").config();
 
 const REST = 1500;
 
-const strategies = [
+var strategies = [
 ];
 
 const getAuroraStrategies = async () => {
@@ -31,15 +31,17 @@ const getAuroraStrategies = async () => {
   });
   console.log(vaultAddresses);
 
+  var newStrategies = [];
   for (const vaultAddress of vaultAddresses) {
     const vaultContract = new Contract(vaultAddress, vaultAbi, provider);
     const strategy = await vaultContract.strategy();
     await sleep(REST);
-    strategies.push(strategy);
+    newStrategies.push(strategy);
   }
 
-  console.log(strategies);
-  console.log(`Aurora strategies loaded: ${strategies.length}`)
+  console.log(newStrategies);
+  console.log(`Aurora strategies loaded: ${newStrategies.length}`)
+  strategies = newStrategies;
 };
 
 const harvestStrategies = async () => {
