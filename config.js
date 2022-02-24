@@ -32,7 +32,7 @@ const chains = {
   1285: {
     id: 1285,
     name: "moonriver",
-    rpc: "https://rpc.moonriver.moonbeam.network",
+    rpc: "https://moonriver.api.onfinality.io/public",
   },
   42161: {
     id: 42161,
