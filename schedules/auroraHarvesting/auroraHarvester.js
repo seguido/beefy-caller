@@ -23,7 +23,9 @@ const getAuroraStrategies = async () => {
     .replace(/partners: \[[a-zA-Z]+\]/gm, "partners: 'fill'");
   const vaultArray = eval("(" + vaults + ")");
 
-  let vaultAddresses = vaultArray.map((vault) => vault.earnedTokenAddress);
+  let vaultAddresses = vaultArray
+    .filter(vault => !vault.depositsPaused && !vault.name.endsWith('-eol'))
+    .map((vault) => vault.earnedTokenAddress);
 
   const provider = new ethers.providers.JsonRpcProvider({
     url: chains[1313161554].rpc,
