@@ -68,7 +68,7 @@ const harvestStrategies = async () => {
 const conditionalHarvest = async (strategyContract, provider,strat) => {
   let lastHarvest = await strategyContract.lastHarvest();
   let currentTs = Date.now()/1000;
-  if (currentTs - lastHarvest > 2*3600) {
+  if (currentTs - lastHarvest > 6*3600) {
     await sleep(REST);
     let tx = await strategyContract.harvest();
     // console.log(tx)

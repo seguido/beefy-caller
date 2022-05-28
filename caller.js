@@ -24,7 +24,7 @@ const main = async () => {
   }, { timezone: "America/Buenos_Aires" });
 
   await getAuroraStrategies();
-  cron.schedule("0 */2 * * * *", async () => {
+  cron.schedule("0 */4 * * * *", async () => {
 
     try {
       console.log('aurora harvesting')
