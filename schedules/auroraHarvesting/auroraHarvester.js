@@ -13,18 +13,12 @@ var strategies = [
 ];
 
 const getAuroraStrategies = async () => {
-  const url = `https://raw.githubusercontent.com/beefyfinance/beefy-app/prod/src/features/configure/vault/aurora_pools.js`;
+  const url = `https://api.beefy.finance/vaults`;
   let vaults = (await axios.get(url)).data;
-  let index = vaults.indexOf("[");
-  vaults = vaults.slice(index);
-  vaults = vaults
-    .replace(";", "")
-    .replace(/,*;*\s*\n*$/, "")
-    .replace(/partners: \[[a-zA-Z]+\]/gm, "partners: 'fill'");
-  const vaultArray = eval("(" + vaults + ")");
+  const vaultArray = vaults.filter(v => v.chain === 'aurora');
 
   let vaultAddresses = vaultArray
-    .filter(vault => !vault.depositsPaused && !vault.name.endsWith('-eol'))
+    .filter(vault => !vault.depositsPaused && !vault.name.endsWith('-eol') && vault.status != 'eol')
     .map((vault) => vault.earnedTokenAddress);
 
   const provider = new ethers.providers.JsonRpcProvider({
@@ -69,6 +63,18 @@ const conditionalHarvest = async (strategyContract, provider,strat) => {
   let lastHarvest = await strategyContract.lastHarvest();
   let currentTs = Date.now()/1000;
   if (currentTs - lastHarvest > 18*3600) {
+    await sleep(REST);
+
+    try {
+      console.log('testing static harvest call ' + strat);
+      await strategyContract.callStatic.harvest();
+      console.log('passed static call');
+    } catch (err) {
+      console.log(err.message);
+      console.log('FAILED STATIC CALL');
+      return;
+    }
+
     await sleep(REST);
     let tx = await strategyContract.harvest();
     // console.log(tx)
