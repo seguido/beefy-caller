@@ -12,7 +12,7 @@ const chains = {
   25: {
     id: 25,
     name: "cronos",
-    rpc: "https://evm-cronos.crypto.org",
+    rpc: "https://evm.cronos.org",
   },
   1666600000: {
     id: 1666600000,
