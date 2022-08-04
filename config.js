@@ -68,6 +68,11 @@ const chains = {
     id: 1284,
     name: "moonbeam",
     rpc: "https://rpc.api.moonbeam.network",
+  },
+  10: {
+    id: 10,
+    name: "optimism",
+    rpc: "https://mainnet.optimism.io",
   },  
 };
 

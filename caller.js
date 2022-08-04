@@ -12,6 +12,16 @@ const { checkGasAll } = require("./schedules/gas");
 const main = async () => {
   await loadBeefyFeeRecipients();
 
+  cron.schedule("0 0 0,6,12,18 * * *", async () => {
+    console.log("updating FeeRecipients");
+    try {
+      await harvestAll();
+    } catch (error) {
+      console.log('error harvesting feebatches all');
+    }
+    console.log("feeRecipients updated");
+  }, { timezone: "America/Buenos_Aires" });
+
   // await checkGasAll();
   cron.schedule("0 0 10,22 * * *", async () => {
     console.log("harvesting feeRecipients");
