@@ -15,7 +15,7 @@ const main = async () => {
   cron.schedule("0 0 0,6,12,18 * * *", async () => {
     console.log("updating FeeRecipients");
     try {
-      await harvestAll();
+      await loadBeefyFeeRecipients();
     } catch (error) {
       console.log('error harvesting feebatches all');
     }
