@@ -50,7 +50,7 @@ const harvestSingle = async (provider, contract, setPrice, mult, setNonce, chain
   console.log("attempting");
 
   let options = {
-    gasLimit: 600000,
+    gasLimit: 1000000,
   };
 
   if (setPrice) {
