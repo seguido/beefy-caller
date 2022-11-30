@@ -3,6 +3,8 @@ const { Contract, ethers, BigNumber } = require("ethers");
 const { chains } = require("../../config");
 const { getHarvestingWallet } = require("../../wallet/wallet");
 const feeRecipientAbi = require("../../abis/feeRecipientAbi.json");
+const rewardPoolAbi = require("../../abis/rewardPoolAbi.json");
+const { notifyOutOfGas } = require("../../notifications/discord");
 
 const chainAddresses = {};
 
@@ -50,7 +52,7 @@ const harvestSingle = async (provider, contract, setPrice, mult, setNonce, chain
   console.log("attempting");
 
   let options = {
-    gasLimit: 1000000,
+    gasLimit: 500000,
   };
 
   if (setPrice) {
@@ -83,11 +85,31 @@ const harvestSingle = async (provider, contract, setPrice, mult, setNonce, chain
       ? console.log(`${chain.name} harvested with tx: ${tx.transactionHash}`)
       : console.log(`${chain.name} harvest failed with tx: ${tx.transactionHash}`);
     if (tx.status === 1) done = true;
-    return tx.hash;
+    return tx;
   } catch (err) {
     console.log("harvest failed");
   }
 };
+
+const meetsHarvestConditions = async(chain, provider) => {
+  if (chain.hourLimit) {
+    console.log(`${chain.name} has harvest conditions, checking`);
+    try {
+      const recipientContract = new Contract(chainAddresses[chain.id], feeRecipientAbi, provider);
+      const rewardPool = await recipientContract.rewardPool();
+      const rewardPoolContract = new Contract(rewardPool, rewardPoolAbi, provider);
+      const endData = await rewardPoolContract.periodFinish();
+      let now = Date.now() /1000;
+      let hoursTillEnd = Math.ceil((endData-now)/3600);
+      return chain.hourLimit > hoursTillEnd ? true : false;
+    } catch (err) {
+      console.log(`Error checking conditions on ${chain.name}`)
+      return false;
+    }
+  } else {
+    return true;
+  }
+}
 
 const harvestAll = async () => {
   for (const chain of Object.values(chains)) {
@@ -107,10 +129,18 @@ const harvestAll = async () => {
     let setNonce = false;
     let mult = 1;
 
+    
+    const shouldHarvest = await meetsHarvestConditions(chain, provider);
+    
+    if (!shouldHarvest) {
+      return console.log(`Harvest conditions not met on ${chain.name}`);
+    }
+    
+    let tx;
+    
     do {
-
       try {
-        await harvestSingle(provider, recipientContract, setPrice, mult, setNonce, chain);
+        tx = await harvestSingle(provider, recipientContract, setPrice, mult, setNonce, chain);
         done = true;
 
       } catch (err) {
@@ -122,12 +152,29 @@ const harvestAll = async () => {
         setNonce = true;
       }
 
+      
     } while (tries-- >= 0 && !done);
+
+    if (tx) {
+      let amountOfGasUsed = tx.gasUsed.mul(tx.effectiveGasPrice);
+      await checkGasBalance(amountOfGasUsed, provider ,getHarvestingWallet(provider).address, chain.name);
+    }
+
     if (!done) {
       console.log("COMPLETELY FAILED ON " + chain.name);
     }
   }
 };
+
+const checkGasBalance = async (amountUsed, provider, address, chain) => {
+  try {
+    const gasBalance = await provider.getBalance(address);
+
+    if (gasBalance.lt(amountUsed.mul(BigNumber.from("10")))) await notifyOutOfGas(chain)
+  } catch (err) {
+    console.log(`Failed to check gas balances on ${chain}`);
+  }
+}
 
 module.exports = {
   loadBeefyFeeRecipients,
