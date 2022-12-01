@@ -5,6 +5,7 @@ const { getHarvestingWallet } = require("../../wallet/wallet");
 const feeRecipientAbi = require("../../abis/feeRecipientAbi.json");
 const rewardPoolAbi = require("../../abis/rewardPoolAbi.json");
 const { notifyOutOfGas } = require("../../notifications/discord");
+const sleep = require("../../utils");
 
 const chainAddresses = {};
 
@@ -85,6 +86,7 @@ const harvestSingle = async (provider, contract, setPrice, mult, setNonce, chain
       ? console.log(`${chain.name} harvested with tx: ${tx.transactionHash}`)
       : console.log(`${chain.name} harvest failed with tx: ${tx.transactionHash}`);
     if (tx.status === 1) done = true;
+    if (!tx.effectiveGasPrice) tx.gasPrice = BigNumber.from(gasPrice)
     return tx;
   } catch (err) {
     console.log("harvest failed");
@@ -159,8 +161,7 @@ const harvestAll = async () => {
     } while (tries-- >= 0 && !done);
 
     if (tx) {
-      let amountOfGasUsed = tx.gasUsed.mul(tx.effectiveGasPrice);
-      await checkGasBalance(amountOfGasUsed, provider ,getHarvestingWallet(provider).address, chain.name);
+      await checkGasBalance(tx, provider ,getHarvestingWallet(provider).address, chain.name);
     }
 
     if (!done) {
@@ -169,13 +170,15 @@ const harvestAll = async () => {
   }
 };
 
-const checkGasBalance = async (amountUsed, provider, address, chain) => {
+const checkGasBalance = async (tx, provider, address, chain) => {
   try {
+    const amountOfGasUsed = tx.gasUsed.mul(tx.effectiveGasPrice || tx.gasPrice);
     const gasBalance = await provider.getBalance(address);
-
-    if (gasBalance.lt(amountUsed.mul(BigNumber.from("10")))) await notifyOutOfGas(chain)
+    
+    if (gasBalance.lt(amountOfGasUsed.mul(BigNumber.from("10")))) await notifyOutOfGas(chain)
   } catch (err) {
     console.log(`Failed to check gas balances on ${chain}`);
+    console.log(tx);
   }
 }
 

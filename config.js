@@ -10,11 +10,11 @@ const chains = {
     name: "bsc",
     rpc: "https://bsc-dataseed.binance.org/",
   },
-  128: {
-    id: 128,
-    name: "heco",
-    rpc: "https://http-mainnet.hecochain.com",
-  },
+  // 128: {
+  //   id: 128,
+  //   name: "heco",
+  //   rpc: "https://http-mainnet.hecochain.com",
+  // },
   25: {
     id: 25,
     name: "cronos",
