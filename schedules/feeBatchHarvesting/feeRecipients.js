@@ -133,9 +133,12 @@ const harvestAll = async () => {
     const shouldHarvest = await meetsHarvestConditions(chain, provider);
     
     if (!shouldHarvest) {
-      return console.log(`Harvest conditions not met on ${chain.name}`);
+      console.log(`Harvest conditions not met on ${chain.name}`);
+      continue;
     }
     
+    console.log(`Conditions met on ${chain.name}, proceeding to harvest`);
+
     let tx;
     
     do {
