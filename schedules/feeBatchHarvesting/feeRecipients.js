@@ -69,6 +69,17 @@ const harvestSingle = async (provider, contract, setPrice, mult, setNonce, chain
     options.nonce = nonce;
     console.log(`nonce is ${nonce / 1}`);
   }
+  
+  try {
+    console.log('testing static febatch harvest call ' + contract.address);
+    await contract.callStatic.harvest();
+    console.log('passed static call');
+  } catch (err) {
+    console.log(err.message);
+    console.log('Failed feebatch static call test');
+    return;
+  }
+
 
   let tx = await contract.harvest(options);
 
@@ -144,9 +155,10 @@ const harvestAll = async () => {
     let tx;
     
     do {
+
       try {
         tx = await harvestSingle(provider, recipientContract, setPrice, mult, setNonce, chain);
-        done = true;
+        if (tx)done = true;
 
       } catch (err) {
         console.log(`Failed on chain ${chain.name}`);
