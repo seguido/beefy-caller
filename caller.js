@@ -10,7 +10,7 @@ const main = async () => {
   await loadBeefyFeeRecipients();
 
   console.log("EPETE")
-  console.log("IS THE BEST")
+  console.log("IS THE WORST")
 
   cron.schedule("0 0 0,6,12,18 * * *", async () => {
     console.log("updating FeeRecipients");
