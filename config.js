@@ -3,7 +3,7 @@ const chains = {
     id: 1,
     name: "ethereum",
     rpc: "https://rpc.ankr.com/eth",
-    hourLimit: 6
+    hourLimit: 40
   },
   56: {
     id: 56,

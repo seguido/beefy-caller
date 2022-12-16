@@ -113,8 +113,8 @@ const meetsHarvestConditions = async(chain, provider) => {
       const rewardPoolContract = new Contract(rewardPool, rewardPoolAbi, provider);
       const endData = await rewardPoolContract.periodFinish();
       let now = Date.now() /1000;
-      let hoursTillEnd = Math.ceil((endData-now)/3600);
-      return chain.hourLimit > hoursTillEnd ? true : false;
+      let hoursTillEnd = Math.ceil((now - endData)/3600);
+      return chain.hourLimit < hoursTillEnd ? true : false;
     } catch (err) {
       console.log(`Error checking conditions on ${chain.name}`)
       return false;
