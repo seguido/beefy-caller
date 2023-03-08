@@ -80,6 +80,11 @@ const chains = {
     name: "optimism",
     rpc: "https://mainnet.optimism.io",
   },  
+  7700: {
+    id: 7700,
+    name: "canto",
+    rpc: "https://canto.slingshot.finance",
+  },  
 };
 
 module.exports = { chains };

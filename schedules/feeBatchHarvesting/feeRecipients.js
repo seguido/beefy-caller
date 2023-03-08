@@ -162,7 +162,7 @@ const harvestAll = async () => {
 
       } catch (err) {
         console.log(`Failed on chain ${chain.name}`);
-        console.log(err);
+        console.log(err.message);
 
         if (setPrice) mult += 1;
         setPrice = true;
