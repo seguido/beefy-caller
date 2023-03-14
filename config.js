@@ -84,7 +84,12 @@ const chains = {
     id: 7700,
     name: "canto",
     rpc: "https://canto.slingshot.finance",
-  },  
+  },
+  2222: {
+    id: 2222,
+    name: "kava",
+    rpc: process.env.KAVA_RPC,
+  },
 };
 
 module.exports = { chains };
