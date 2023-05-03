@@ -53,7 +53,7 @@ const harvestSingle = async (provider, contract, setPrice, mult, setNonce, chain
   console.log("attempting");
 
   let options = {
-    gasLimit: 650000,
+    gasLimit: 850000,
   };
 
   if (setPrice) {
@@ -193,6 +193,8 @@ const checkGasBalance = async (tx, provider, address, chain) => {
     console.log(tx);
   }
 }
+
+function calculateDaysBetweenDates (start, end) {}
 
 module.exports = {
   loadBeefyFeeRecipients,
