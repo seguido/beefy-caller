@@ -53,7 +53,7 @@ const harvestSingle = async (provider, contract, setPrice, mult, setNonce, chain
   console.log("attempting");
 
   let options = {
-    gasLimit: 850000,
+    gasLimit: chain.customGasLimit ?? 850000,
   };
 
   if (setPrice) {
@@ -72,7 +72,7 @@ const harvestSingle = async (provider, contract, setPrice, mult, setNonce, chain
   
   try {
     console.log('testing static febatch harvest call ' + contract.address);
-    await contract.callStatic.harvest();
+    await contract.callStatic.harvest({gasLimit: options.gasLimit});
     console.log('passed static call');
   } catch (err) {
     console.log(err.message);

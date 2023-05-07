@@ -20,11 +20,11 @@ const chains = {
     name: "cronos",
     rpc: "https://evm.cronos.org",
   },
-  1666600000: {
-    id: 1666600000,
-    name: "one",
-    rpc: "https://api.harmony.one",
-  },
+  // 1666600000: {
+  //   id: 1666600000,
+  //   name: "one",
+  //   rpc: "https://api.harmony.one",
+  // },
   137: {
     id: 137,
     name: "polygon",
@@ -44,6 +44,7 @@ const chains = {
     id: 42161,
     name: "arbitrum",
     rpc: "https://arb1.arbitrum.io/rpc",
+    customGasLimit: 2500000
   },
   42220: {
     id: 42220,
