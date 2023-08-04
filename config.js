@@ -46,11 +46,11 @@ const chains = {
     rpc: "https://arb1.arbitrum.io/rpc",
     customGasLimit: 2500000
   },
-  42220: {
-    id: 42220,
-    name: "celo",
-    rpc: "https://forno.celo.org",
-  },
+  // 42220: {
+  //   id: 42220,
+  //   name: "celo",
+  //   rpc: "https://forno.celo.org",
+  // },
   43114: {
     id: 43114,
     name: "avax",
@@ -66,11 +66,11 @@ const chains = {
     name: "metis",
     rpc: "https://andromeda.metis.io/?owner=1088",
   },
-  1313161554: {
-    id: 1313161554,
-    name: "aurora",
-    rpc: process.env.AURORA_RPC  || "https://mainnet.aurora.dev",
-  },
+  // 1313161554: {
+  //   id: 1313161554,
+  //   name: "aurora",
+  //   rpc: process.env.AURORA_RPC  || "https://mainnet.aurora.dev",
+  // },
   1284: {
     id: 1284,
     name: "moonbeam",

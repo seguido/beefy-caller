@@ -29,30 +29,30 @@ const main = async () => {
     console.log("feeRecipients harvested");
   }, { timezone: "America/Buenos_Aires" });
 
-  await getAuroraStrategies();
-  cron.schedule("0 */4 * * * *", async () => {
+  // await getAuroraStrategies();
+  // cron.schedule("0 */4 * * * *", async () => {
 
-    try {
-      console.log('aurora harvesting')
-      await harvestStrategies();
-      console.log('finished harvesting aurora')
-    } catch (error) {
-      console.log("error harvesting aurora")
-    }
-    console.log("harvestingAurora")
-  }, { timezone: "America/Buenos_Aires" });
+  //   try {
+  //     console.log('aurora harvesting')
+  //     await harvestStrategies();
+  //     console.log('finished harvesting aurora')
+  //   } catch (error) {
+  //     console.log("error harvesting aurora")
+  //   }
+  //   console.log("harvestingAurora")
+  // }, { timezone: "America/Buenos_Aires" });
 
 
-  cron.schedule("0 0 */6 * * *", async () => {
+  // cron.schedule("0 0 */6 * * *", async () => {
 
-    try {
-      console.log('Updating aurora strategies')
-      await getAuroraStrategies();
-      console.log('finished updating strategies aurora')
-    } catch (error) {
-      console.log("error harvesting aurora")
-    }
-  }, { timezone: "America/Buenos_Aires" });
+  //   try {
+  //     console.log('Updating aurora strategies')
+  //     await getAuroraStrategies();
+  //     console.log('finished updating strategies aurora')
+  //   } catch (error) {
+  //     console.log("error harvesting aurora")
+  //   }
+  // }, { timezone: "America/Buenos_Aires" });
 };
 
 main();
