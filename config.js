@@ -91,6 +91,11 @@ const chains = {
     name: "kava",
     rpc: process.env.KAVA_RPC,
   },
+  8453: {
+    id: 8453,
+    name: "base",
+    rpc: "https://base.llamarpc.com",
+  },
 };
 
 module.exports = { chains };
