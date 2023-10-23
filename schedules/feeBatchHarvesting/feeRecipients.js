@@ -13,13 +13,13 @@ const loadBeefyFeeRecipients = async () => {
   for (const chain of Object.values(chains)) {
     const url = `https://raw.githubusercontent.com/beefyfinance/beefy-api/prod/packages/address-book/address-book/${chain.name}/platforms/beefyfinance.ts`;
 
-    let resp = await axios.get(url);
+    const resp = await axios.get(url);
 
-    let line = resp.data
+    const line = resp.data
       .split("\n")
       .filter((line) => line.includes("beefyFeeRecipient"))[0];
 
-    let address = line.split(":")[1].replace(",", "").replace(/'/g, "").trim();
+    const address = line.split(":")[1].replace(",", "").replace(/'/g, "").trim();
 
     chainAddresses[chain.id] = address;
   }
